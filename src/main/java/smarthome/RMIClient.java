@@ -20,6 +20,7 @@ public class RMIClient {
                 System.out.println("2 - Desligar luz");
                 System.out.println("3 - Trancar porta");
                 System.out.println("4 - Destrancar porta");
+                System.out.println("5 - Ver temperatura");
                 System.out.print("Escolha uma opção: ");
 
                 opcao = scanner.nextInt();
@@ -36,6 +37,9 @@ public class RMIClient {
                         break;
                     case 4:
                         service.unlockDoor();
+                        break;
+                    case 5:
+                        service.TempRead();
                         break;
                     default:
                         System.out.println("Opção inválida!");

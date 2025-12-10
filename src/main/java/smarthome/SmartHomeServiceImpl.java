@@ -33,23 +33,33 @@ public class SmartHomeServiceImpl extends UnicastRemoteObject implements SmartHo
     @Override
     public void turnLightOn() throws RemoteException {
         publish(props.getProperty("mqtt.topic.light"), "ON");
+        subscribe(props.getProperty("mqtt.topic.response"));
     }
 
     @Override
     public void turnLightOff() throws RemoteException {
         publish(props.getProperty("mqtt.topic.light"), "OFF");
+        subscribe(props.getProperty("mqtt.topic.response"));
     }
 
     @Override
     public void lockDoor() throws RemoteException {
         publish(props.getProperty("mqtt.topic.door"), "LOCK");
+        subscribe(props.getProperty("mqtt.topic.response"));
     }
 
     @Override
     public void unlockDoor() throws RemoteException {
         publish(props.getProperty("mqtt.topic.door"), "UNLOCK");
+        subscribe(props.getProperty("mqtt.topic.response"));
     }
     
+    @Override
+    public void TempRead() throws RemoteException {
+        publish(props.getProperty("mqtt.topic.temp"), "READ");
+        subscribe(props.getProperty("mqtt.topic.response"));
+    }
+
     private void publish(String topic, String message) {
         try {
             mqttClient.publish(topic, new MqttMessage(message.getBytes()));
@@ -58,5 +68,14 @@ public class SmartHomeServiceImpl extends UnicastRemoteObject implements SmartHo
             e.printStackTrace();
         }
     }
-    
+
+    private void subscribe(String topic) {
+        try {
+            mqttClient.subscribe(topic, (t, m) -> {
+                System.out.println("Mensagem recebida no tópico " + t + ": " + new String(m.getPayload()));
+            });
+        } catch (MqttException e) {
+            e.printStackTrace();
+        }
+    }
 }

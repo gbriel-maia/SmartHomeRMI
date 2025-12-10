@@ -8,4 +8,5 @@ public interface SmartHomeService extends Remote {
     void turnLightOff() throws RemoteException;
     void lockDoor() throws RemoteException;
     void unlockDoor() throws RemoteException;
+    void TempRead() throws RemoteException;
 }
